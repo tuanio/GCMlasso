@@ -16,6 +16,8 @@ data_length = dim(data)[1]
 na_remove_percent <- 0.95
 na_count <- sapply(data, function(y) sum(length(which(is.na(y))))) / data_length
 na_count <- data.frame(na_count)
+na_count
+
 # lọc
 subset <- na_count %>% filter(.data[['na_count']] < na_remove_percent)
 
@@ -29,7 +31,7 @@ filtered_data <- data %>% select(all_of(selected_cols))
 filtered_data <- filtered_data %>% filter(!is.na(.data[[target]]))
 
 # train model
-train_data = Framingham
+train_data = filtered_data
 nsamp = 500 # 20000
 nwarm = 100 # 500
 
@@ -37,7 +39,7 @@ size <- length(train_data)
 
 print(size)
 
-var_ord <- 1:(size - 1)
+var_ord <- 2:(size - 1)
 var_group <- size
 
 print(var_ord)
@@ -51,11 +53,13 @@ GCMlasso_obj <- GCMlasso(data=train_data, var_ord=var_ord, var_group=var_group, 
 print(unique(train_data[size]))
 
 # xuất ra kết quả của GCMlasso_obj
-print(GCMlasso_obj)
+# print(GCMlasso_obj)
 
 # so sánh 2 nhóm (cụm) với nhau
-group1 = 1:2
-group2 = 3:4
+# group1 = c(1, 2)
+# group2 = c(3, 4)
+group1 = 3
+group2 = 4
 
 compare_group(GCMlasso_obj, grp1=group1, grp2=group2, var=var_ord, credible_level=0.95)
 
