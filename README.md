@@ -1,3 +1,5 @@
+# GCMlasso
+
 Perform Bayesian Gaussian graphical model with clustering structure for ordered variables in multilevel data sets. The conditional independence between variables are measured on the latent scale via the extended rank likelihood method. Shrinkage effects are applied on the precision matrix to handle multicollinearity. Clustering effects are modelled through the random effects. Missing data are allowed.
 The main function 'GCMlasso' fits Bayesian Gaussian copula model with graphical lasso prior for variables with ordering (continuous, ordinal and binary) in multilevel data sets. Adaptive graphical lasso prior is put on the precion matrix of the latent variables conditional on the random effects, where the latent variables are implied by the extended rank likelihood method.
 Functions 'compare_group', 'plot_graph', 'reg_coef' and 'predict' perform post-analyses after fitting GCMlasso. 'compare_group' computes the differences of the random effects of variables from two groups. 'plot_graph' plots the conditional dependence between variables on the latent scale where the assocations are computed from the precision matrices from the MCMC. 'reg_coef' computes the regression coefficients of the predictors on a response on the latent variables scale. 'predict' makes predictions for positive outcomes for binary response.
@@ -25,4 +27,7 @@ reg_coef(GCMlasso_obj,var_pred=1:14,var_response=15)
 
 ### predict probabilities of 'TenYearCHD'
 predict_val<-predict(GCMlasso_obj,var_response=15,var_group=16)
+
+# References
+- This github respository is a folk and edit version of origin version, here: https://github.com/jialiwang1211/GCMlasso
 
