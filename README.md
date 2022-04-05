@@ -8,7 +8,7 @@ The use of the package is demonstrated by the Framingham heart disease data set,
 
 ### Installation: 
 library(devtools)\
-install_github("jialiwang1211/GCMlasso")
+install_github("tuanio/GCMlasso")
 
 ### Examples:
 ### run main function
