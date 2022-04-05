@@ -134,7 +134,7 @@ GCMlasso <- function(data,var_ord,var_group,nsamp=1000,odens=1,nwarm=500,
 
     psi<-riwish(nu_psi+m,lambda_psi_inv+t(b)%*%b)
 
-    S <- t(as.vector(Z-b.expand)) %*% as.vector(Z-b.expand)
+    S <- t(Z-b.expand) %*% (Z-b.expand)
 
     Omegaadjust <- pmax(abs(Omega[upperind]),1e-12)
     lambda<-rgamma(length(lowerind),shape=1+s,scale=1/(Omegaadjust+t))

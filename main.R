@@ -5,13 +5,15 @@ data_path = "C:/Users/nvatu/Desktop/R data processing/Surveytest01042022.csv"
 
 data <- read.csv(data_path, encoding="UTF-8", na.strings = 0)
 
+target = 'Suggestion2016'
+
 # thống kê sơ bộ
 # cột cuối (cột target) bị nan tới 92%
 
 data_length = dim(data)[1]
 
-# loại bỏ những cột bị nan trên 95%
-na_remove_percent <- 0.95
+# loại bỏ những cột bị nan trên 93%
+na_remove_percent <- 0.93
 na_count <- sapply(data, function(y) sum(length(which(is.na(y))))) / data_length
 na_count <- data.frame(na_count)
 # lọc
@@ -22,7 +24,9 @@ selected_cols <- row.names(subset)
 print("Những cột dữ liệu này sẽ được giữ lại (không bị nan quá 50%):")
 print(selected_cols)
 
-filtered_data <- data %>% select(selected_cols)
+filtered_data <- data %>% select(all_of(selected_cols))
+
+filtered_data <- filtered_data %>% filter(.data[[target]])
 
 size <- length(selected_cols)
 
