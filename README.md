@@ -9,43 +9,47 @@ The use of the package is demonstrated by the Framingham heart disease data set,
 ### Installation: 
 
 Trước tiên cần phải tải Rtools 4.0 từ trang chủ của R
+Có thể lấy ở đây: https://cran.r-project.org/bin/windows/Rtools/
+
+
 sau đó cài đặt devtools bằng lệnh
 
 `install.packages("devtools")`
 
 Tiếp đến import `devtools` vào và chạy install từ github
-`
+
+```
 library(devtools)
 install_github("jialiwang1211/GCMlasso")
-`
+```
 
 ### Examples:
 ### run main function
-`
+```
 library(GCMlasso)
 GCMlasso_obj<-GCMlasso(data=Framingham,var_ord=1:15,var_group=16,
   nsamp=1000,odens=1,nwarm=500,seed=1,s=1e-2,t=1e-2,verb=TRUE)
-`
+```
   
 ### compare variables in cluster 1(education=1&2) and cluster 2(education=3&4)
-`
+```
 compare_group(GCMlasso_obj,grp1=1:2,grp2=3:4,var=1:15,credible_level=0.95)
-` 
+```
  
 ### plot conditional dependence between variables
-`
+```
 plot_graph(GCMlasso_obj,var=1:15,edge_perc=0.65)
-`
+```
 
 ### compute regression coefficients on 'TenYearCHD'
-`
+```
 reg_coef(GCMlasso_obj,var_pred=1:14,var_response=15)
-`
+```
 
 ### predict probabilities of 'TenYearCHD'
-`
+```
 predict_val<-predict(GCMlasso_obj,var_response=15,var_group=16)
-`
+```
 
 # References
 - This github respository is a folk and edit version of origin version, here: https://github.com/jialiwang1211/GCMlasso

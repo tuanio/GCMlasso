@@ -28,37 +28,43 @@ filtered_data <- data %>% select(all_of(selected_cols))
 
 filtered_data <- filtered_data %>% filter(!is.na(.data[[target]]))
 
-size <- length(filtered_data)
+# train model
+train_data = Framingham
+nsamp = 500 # 20000
+nwarm = 100 # 500
 
-size
+size <- length(train_data)
 
-# loại bỏ cột đầu tiên, do nó là cột thứ tự
+print(size)
 
-var_ord <- 2:(size - 1)
+var_ord <- 1:(size - 1)
 var_group <- size
 
 print(var_ord)
 print(var_group)
 
 # xây dựng mô hình
-GCMlasso_obj <- GCMlasso(data=filtered_data, var_ord=var_ord, var_group=var_group, nsamp=20000,
-                         odens=1, nwarm=500, seed=1, s=1e-2, t=1e-4, verb=TRUE)
+GCMlasso_obj <- GCMlasso(data=train_data, var_ord=var_ord, var_group=var_group, nsamp=nsamp,
+                         odens=1, nwarm=nwarm, seed=1, s=1e-2, t=1e-4, verb=TRUE)
 
-print(unique(filtered_data[target]))
+# xuất ra các lớp duy nhất của biến muốn dự đoán
+print(unique(train_data[size]))
 
-# ví dụ
-group1 = 2
-group2 = 3
+# xuất ra kết quả của GCMlasso_obj
+print(GCMlasso_obj)
 
 # so sánh 2 nhóm (cụm) với nhau
+group1 = 1:2
+group2 = 3:4
+
 compare_group(GCMlasso_obj, grp1=group1, grp2=group2, var=var_ord, credible_level=0.95)
 
 # vẽ đồ thị
 plot_graph(GCMlasso_obj, var=var_ord, edge_perc=0.65)
 
 # tính hệ số hồi quy cho biến có thứ tự là size - 1 (trường hợp này là 31 - 1 = 30)
-reg_coef(GCMlasso_obj, var_pred=2:size - 2, var_response=size - 1)
+reg_coef(GCMlasso_obj, var_pred=1:14, var_response=15)
 
 # dự đoán xác suất
-predict_val <- predict(GCMlasso_obj, var_response=size - 1, var_group=var_group)
+predict_val <- predict(GCMlasso_obj, var_response=15, var_group=var_group)
 predict_val
