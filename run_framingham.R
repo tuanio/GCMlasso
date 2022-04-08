@@ -9,6 +9,7 @@ GCMlasso_obj<-GCMlasso(data=Framingham,var_ord=1:15,var_group=16,
 gr1 = c(1, 2)
 gr2 = c(3, 4)
 
+GCMlasso_obj$b.st
 
 compare_group(GCMlasso_obj,grp1=gr1,grp2=gr2,var=1:15,credible_level=0.95)
 

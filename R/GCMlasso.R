@@ -9,11 +9,11 @@
 #'
 #' \code{GCMlasso} function fits the Bayesian Gaussian copula model with graphical lasso prior
 #' for variables with ordering (continuous, ordinal and binary) in multilevel data sets.
-#' Adaptive graphical lasso prior is put on the precion matrix of the latent variables
+#' Adaptive graphical lasso prior is put on the precision matrix of the latent variables
 #' conditional on the random effects, where the latent variables are implied by the
 #' extended rank likelihood method.
 #'
-#' \code{var_group} is the index of the varible that defines the clusters, and
+#' \code{var_group} is the index of the variable that defines the clusters, and
 #' should be placed at the last column in the \code{data}. The coding for the clustering variable
 #' is from 1 to the total number of clusters. The binary variables
 #' in \code{var_ord} should be coded as 0 (control) or 1(case) in the case-control studies.
