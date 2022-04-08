@@ -20,7 +20,7 @@ data <- data[, -which(names(data) %in% c("Land_ownership_type1",
 data_length = dim(data)[1]
 
 # loại bỏ những cột bị nan trên 93%
-na_remove_percent <- 0.50
+na_remove_percent <- 0.90
 na_count <- sapply(data, function(y) sum(length(which(is.na(y))))) / data_length
 na_count <- data.frame(na_count)
 na_count
