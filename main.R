@@ -1,17 +1,18 @@
 library(plyr)
 library(dplyr)
 library(GCMlasso)
+library(igraph)
 
-data_path = "C:\\Users\\nvatu\\Desktop\\R data processing\\Final08042022.csv"
+data_path = "C:\\Users\\nvatu\\Desktop\\R data processing\\Final13042022.csv"
 
 data <- read.csv(data_path, encoding="UTF-8", na.strings = "#NULL!")
 
 target = 'Year'
 
-data <- data[, -which(names(data) %in% c("Land_ownership_type1",
-                                         "Land_ownership_type2",
-                                         "Land_ownership_type3",
-                                         "Land_ownership_type4"))]
+# data <- data[, -which(names(data) %in% c("Land_ownership_type1",
+#                                          "Land_ownership_type2",
+#                                          "Land_ownership_type3",
+#                                          "Land_ownership_type4"))]
 
 
 # thống kê sơ bộ
@@ -39,8 +40,8 @@ filtered_data <- filtered_data %>% filter(!is.na(.data[[target]]))
 
 # tạo thông tin để train model
 train_data = filtered_data
-nsamp = 1000 # 20000
-nwarm = 500 # 500
+nsamp = 500 # 20000
+nwarm = 100 # 500
 
 size <- length(train_data)
 
@@ -81,21 +82,45 @@ print(unique(train_data[size]))
 
 var_ord
 
-GCMlasso_object$b.st
+GCMlasso_object$Omega
 
 # so sánh 2 nhóm (cụm) với nhau
 # group1 = c(1, 2)
 # group2 = c(3, 4)
 gr1 = 1:2
-gr2 = 3:4
+gr2 = 3
 
 print(gr1)
 print(gr2)
 
 compare_group(GCMlasso_object, grp1=gr1, grp2=gr2, var=var_ord, credible_level=0.95)
 
+plot_graph_vd <- function(GCMlasso_obj=CMlasso_obj,var,edge_perc,seed=1){
+  set.seed(seed)
+  data<-GCMlasso_obj$data_ordered
+  Omega<-GCMlasso_obj$Omega.st[var,var,]
+  numsamp=dim(Omega)[3]
+  Prec.mcmc<-Omega[,,1:numsamp]
+  Prec<-apply(Prec.mcmc,c(1,2),mean)
+  quantile_val<-quantile(abs(Prec),edge_perc)
+  Prec[abs(Prec)<quantile_val]=0
+
+  colnames(Prec)<-rownames(Prec)<-names(data)[var]
+  network=graph_from_adjacency_matrix(Prec, weighted=T, mode="lower", diag=F)
+
+  V(network)$size <- 5
+  E(network)[E(network)$weight>0]$color <- "blue"
+  E(network)[E(network)$weight< -0]$color <- "red"
+
+  pdf("figure.pdf", 20, 20)
+  igraph.options(plot.layout=layout.graphopt, vertex.size=10)
+  plot(network)
+  dev.off()
+  # plot.igraph(network, layout=layout_with_gem, vertex.size=5)
+}
+
 # vẽ đồ thị
-plot_graph(GCMlasso_object, var=var_ord, edge_perc=0.95)
+plot_graph_vd(GCMlasso_object, var=var_ord, edge_perc=0.97)
 
 # tính hệ số hồi quy cho biến có thứ tự là size - 1 (trường hợp này là 31 - 1 = 30)
 reg_coef(GCMlasso_object, var_pred=1:(size - 2), var_response=size - 2)
